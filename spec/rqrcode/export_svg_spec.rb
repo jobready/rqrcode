@@ -22,7 +22,7 @@ describe 'Export::SVG' do
     end
 
     it 'omits surrounding XML when `standalone` is `false`' do
-      doc = RQRCode::QRCode.new('qrcode').as_svg(standalone: false)
+      doc = RQRCode::QRCode.new('qrcode').as_svg(:standalone => false)
       # For now we do very naive pattern matching. The alternative is to
       # include a librariry for parsing XML, like nokogiri. That is a big
       # change for such a small test, though.

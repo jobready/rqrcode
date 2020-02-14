@@ -40,16 +40,16 @@ module RQRCode
       #
       def as_png(options = {})
         default_img_options = {
-          bit_depth: 1,
-          border_modules: 4,
-          color_mode: ChunkyPNG::COLOR_GRAYSCALE,
-          color: 'black',
-          file: false,
-          fill: 'white',
-          module_px_size: 6,
-          resize_exactly_to: false,
-          resize_gte_to: false,
-          size: 120
+          :bit_depth => 1,
+          :border_modules => 4,
+          :color_mode => ChunkyPNG::COLOR_GRAYSCALE,
+          :color => 'black',
+          :file => false,
+          :fill => 'white',
+          :module_px_size => 6,
+          :resize_exactly_to => false,
+          :resize_gte_to => false,
+          :size => 120
         }
 
         googleis = options.length == 0 || (options[:size] != nil)
@@ -109,8 +109,8 @@ module RQRCode
 
         if output_file
           constraints = {
-            color_mode: options[:color_mode],
-            bit_depth: options[:bit_depth]
+            :color_mode => options[:color_mode],
+            :bit_depth => options[:bit_depth]
           }
           constraints[:interlace]   = options[:interlace]   if options.has_key?(:interlace)
           constraints[:compression] = options[:compression] if options.has_key?(:compression)

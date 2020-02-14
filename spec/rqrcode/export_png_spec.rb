@@ -17,10 +17,10 @@ describe 'Export::PNG' do
   end
 
   it 'must export a png using the correct defaults' do
-    expect(ChunkyPNG::Image).to receive(:new)
-      .once
-      .with(120, 120, 4294967295)
-      .and_return(mockImage)
+    expect(ChunkyPNG::Image).to receive(:new).
+      once.
+      with(120, 120, 4294967295).
+      and_return(mockImage)
     expect(mockImage).not_to receive(:save)
 
     RQRCode::QRCode.new('png').as_png
@@ -28,59 +28,61 @@ describe 'Export::PNG' do
 
   context 'with file save and constaints' do
     it 'should export using the correct defaults' do
-      expect(ChunkyPNG::Image).to receive(:new)
-        .once
-        .with(174, 174, 4294967295)
-        .and_return(mockImage)
-      expect(mockImage).to receive(:save)
-        .once
-        .with('some/path', {bit_depth: 1, color_mode: 0})
+      expect(ChunkyPNG::Image).to receive(:new).
+        once.
+        with(174, 174, 4294967295).
+        and_return(mockImage)
+      expect(mockImage).to receive(:save).
+        once.
+        with('some/path', {:bit_depth => 1, :color_mode => 0})
 
       RQRCode::QRCode.new('png').as_png(
-        file: 'some/path'
+        :file => 'some/path'
       )
     end
 
     it 'should export using custom constraints' do
-      expect(ChunkyPNG::Image).to receive(:new)
-        .once
-        .with(174, 174, 4294967295)
-        .and_return(mockImage)
-      expect(mockImage).to receive(:save)
-        .once
-        .with('some/path', {
-          bit_depth: 8,
-          color_mode: 2,
-          interlace: true,
-          compression: 5
+      expect(ChunkyPNG::Image).to receive(:new).
+        once.
+        with(174, 174, 4294967295).
+        and_return(mockImage)
+      expect(mockImage).to receive(:save).
+        once.
+        with('some/path', {
+          :bit_depth => 8,
+          :color_mode => 2,
+          :interlace => true,
+          :compression => 5
         })
 
       RQRCode::QRCode.new('png').as_png(
-        color_mode: ChunkyPNG::COLOR_TRUECOLOR,
-        bit_depth: 8,
-        file: 'some/path',
-        color: 'red',
-        interlace: true,
-        compression: 5
+        :color_mode => ChunkyPNG::COLOR_TRUECOLOR,
+        :bit_depth => 8,
+        :file => 'some/path',
+        :color => 'red',
+        :interlace => true,
+        :compression => 5
       )
     end
 
     it 'should save' do
       qrcode = RQRCode::QRCode.new("http://github.com/")
       png = qrcode.as_png(
-        bit_depth: 1,
-        border_modules: 4,
-        color_mode: ChunkyPNG::COLOR_GRAYSCALE,
-        color: 'black',
-        file: nil,
-        fill: 'white',
-        module_px_size: 6,
-        resize_exactly_to: false,
-        resize_gte_to: false,
-        size: 120
+        :bit_depth => 1,
+        :border_modules => 4,
+        :color_mode => ChunkyPNG::COLOR_GRAYSCALE,
+        :color => 'black',
+        :file => nil,
+        :fill => 'white',
+        :module_px_size => 6,
+        :resize_exactly_to => false,
+        :resize_gte_to => false,
+        :size => 120
       )
-      IO.binwrite("/tmp/github-qrcode.png", png.to_s)
-      expect(IO.binread("/tmp/github-qrcode.png")).to eq png.to_s
+      File::open("/tmp/github-qrcode.png", 'wb:ASCII-8BIT') {|f| f.write png.to_s }
+      # IO.binwrite("/tmp/github-qrcode.png", png.to_s)
+      expect(File::read('/tmp/github-qrcode.png')).to eq png.to_s
+      # expect(IO.binread("/tmp/github-qrcode.png")).to eq png.to_s
     end
   end
 end
